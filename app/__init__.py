@@ -29,5 +29,6 @@ def create_app():
     migrate.init_app(app, db)
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
+    from app import models  # ← Ajoute cette ligne
     
     return app
