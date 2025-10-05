@@ -1,66 +1,273 @@
 {% extends "base.html" %}
 
+{% block title %}Tableau de Bord • LeadFlow{% endblock %}
+
 {% block content %}
-<div class="row">
-    <div class="col-12">
-        <h1>Dashboard</h1>
-        <p class="lead">Bienvenue sur votre tableau de bord</p>
-    </div>
+<!-- En-tête élégant -->
+<div class="elegant-page-header float-in">
+    <h1>Tableau de Bord Élégant</h1>
+    <p class="lead">Surveillance en temps réel de votre écosystème commercial</p>
 </div>
 
-<div class="row mt-4">
-    <div class="col-md-3">
-        <div class="card text-white bg-primary">
-            <div class="card-body">
-                <h5 class="card-title">Clients</h5>
-                <p class="card-text display-6">0</p>
-                <a href="{{ url_for('clients') }}" class="text-white">Voir tous →</a>
-            </div>
+<!-- Statistiques principales -->
+<div class="elegant-stats-grid">
+    <div class="elegant-stat-card slide-in-left">
+        <div class="stat-icon-elegant">👥</div>
+        <div class="elegant-stat-number" data-target="156">0</div>
+        <div class="elegant-stat-label">Clients Actifs</div>
+        <div class="elegant-stat-trend trend-positive">
+            <i class="fas fa-arrow-up me-1"></i> +12%
         </div>
     </div>
     
-    <div class="col-md-3">
-        <div class="card text-white bg-success">
-            <div class="card-body">
-                <h5 class="card-title">Projets</h5>
-                <p class="card-text display-6">0</p>
-                <a href="#" class="text-white">Voir tous →</a>
-            </div>
+    <div class="elegant-stat-card slide-in-left">
+        <div class="stat-icon-elegant">📊</div>
+        <div class="elegant-stat-number" data-target="42">0</div>
+        <div class="elegant-stat-label">Projets en Cours</div>
+        <div class="elegant-stat-trend trend-neutral">
+            <i class="fas fa-minus me-1"></i> Stable
         </div>
     </div>
     
-    <div class="col-md-3">
-        <div class="card text-white bg-warning">
-            <div class="card-body">
-                <h5 class="card-title">En retard</h5>
-                <p class="card-text display-6">0</p>
-                <a href="#" class="text-white">Voir détails →</a>
-            </div>
+    <div class="elegant-stat-card slide-in-right">
+        <div class="stat-icon-elegant">💰</div>
+        <div class="elegant-stat-number" data-target="78">0</div>
+        <div class="elegant-stat-label">Taux Conversion</div>
+        <div class="elegant-stat-trend trend-positive">
+            <i class="fas fa-arrow-up me-1"></i> +5%
         </div>
     </div>
     
-    <div class="col-md-3">
-        <div class="card text-white bg-info">
-            <div class="card-body">
-                <h5 class="card-title">Leads</h5>
-                <p class="card-text display-6">0</p>
-                <a href="#" class="text-white">Voir tous →</a>
-            </div>
+    <div class="elegant-stat-card slide-in-right">
+        <div class="stat-icon-elegant">🎯</div>
+        <div class="elegant-stat-number" data-target="89">0</div>
+        <div class="elegant-stat-label">Satisfaction Client</div>
+        <div class="elegant-stat-trend trend-positive">
+            <i class="fas fa-arrow-up me-1"></i> +3%
         </div>
     </div>
 </div>
 
-<div class="row mt-4">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h5>Actions rapides</h5>
+<!-- Première ligne : Diagrammes principaux -->
+<div class="row g-4">
+    <!-- Distribution clients -->
+    <div class="col-xl-4 col-lg-6">
+        <div class="elegant-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0">Répartition Clients</h4>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-elegant" data-bs-toggle="dropdown">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-elegant">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-download me-2"></i>Exporter</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-sync me-2"></i>Actualiser</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="card-body">
-                <a href="{{ url_for('new_client') }}" class="btn btn-primary me-2">Nouveau Client</a>
-                <a href="{{ url_for('clients') }}" class="btn btn-outline-primary">Voir tous les clients</a>
+            <canvas id="clientsChart" height="300"></canvas>
+        </div>
+    </div>
+
+    <!-- Croissance mensuelle -->
+    <div class="col-xl-8 col-lg-6">
+        <div class="elegant-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0">Croissance Mensuelle</h4>
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-elegant active">Mensuel</button>
+                    <button class="btn btn-sm btn-outline-elegant">Trimestriel</button>
+                    <button class="btn btn-sm btn-outline-elegant">Annuel</button>
+                </div>
+            </div>
+            <canvas id="monthlyChart" height="300"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Deuxième ligne : Analytics & Actions -->
+<div class="row g-4 mt-2">
+    <!-- Activité récente -->
+    <div class="col-xl-8 col-lg-7">
+        <div class="elegant-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0">Activité Récente</h4>
+                <span class="badge badge-elegant badge-active">En temps réel</span>
+            </div>
+            <canvas id="activityChart" height="250"></canvas>
+            
+            <!-- Liste d'activités -->
+            <div class="mt-4">
+                <div class="activity-list">
+                    <div class="activity-item d-flex align-items-center py-3 border-bottom">
+                        <div class="activity-icon me-3">
+                            <div class="icon-circle bg-primary bg-opacity-10 text-primary">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                        </div>
+                        <div class="activity-content flex-grow-1">
+                            <h6 class="mb-1">Nouveau client ajouté</h6>
+                            <p class="text-elegant-gray mb-0">Société TechCorp a été ajoutée à la base</p>
+                        </div>
+                        <div class="activity-time text-elegant-gray">
+                            Il y a 2 min
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item d-flex align-items-center py-3 border-bottom">
+                        <div class="activity-icon me-3">
+                            <div class="icon-circle bg-success bg-opacity-10 text-success">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                        <div class="activity-content flex-grow-1">
+                            <h6 class="mb-1">Projet complété</h6>
+                            <p class="text-elegant-gray mb-0">Site e-commerce livré pour FashionStore</p>
+                        </div>
+                        <div class="activity-time text-elegant-gray">
+                            Il y a 15 min
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item d-flex align-items-center py-3">
+                        <div class="activity-icon me-3">
+                            <div class="icon-circle bg-warning bg-opacity-10 text-warning">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                        </div>
+                        <div class="activity-content flex-grow-1">
+                            <h6 class="mb-1">Jalon en retard</h6>
+                            <p class="text-elegant-gray mb-0">Phase design dépasse la date limite</p>
+                        </div>
+                        <div class="activity-time text-elegant-gray">
+                            Il y a 1h
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions rapides & Résumé -->
+    <div class="col-xl-4 col-lg-5">
+        <!-- Actions rapides -->
+        <div class="elegant-card mb-4">
+            <h4 class="mb-4">Actions Rapides</h4>
+            <div class="d-grid gap-3">
+                <a href="{{ url_for('new_client') }}" class="btn btn-elegant btn-lg">
+                    <i class="fas fa-user-plus me-2"></i>
+                    Nouveau Client
+                </a>
+                <a href="{{ url_for('clients') }}" class="btn btn-elegant btn-lg">
+                    <i class="fas fa-users me-2"></i>
+                    Gérer Clients
+                </a>
+                <button class="btn btn-elegant btn-lg" onclick="showElegantNotification('Rapport généré avec succès!', 'success')">
+                    <i class="fas fa-chart-bar me-2"></i>
+                    Rapport Analytics
+                </button>
+                <button class="btn btn-outline-elegant btn-lg">
+                    <i class="fas fa-cog me-2"></i>
+                    Paramètres
+                </button>
+            </div>
+        </div>
+
+        <!-- Résumé performance -->
+        <div class="elegant-card">
+            <h4 class="mb-4">Performance</h4>
+            <div class="performance-stats">
+                <div class="performance-item d-flex justify-content-between align-items-center py-2">
+                    <span class="text-elegant-gray">Objectif mensuel</span>
+                    <div class="progress" style="width: 120px; height: 8px;">
+                        <div class="progress-bar bg-success" style="width: 85%"></div>
+                    </div>
+                    <strong>85%</strong>
+                </div>
+                
+                <div class="performance-item d-flex justify-content-between align-items-center py-2">
+                    <span class="text-elegant-gray">Taux de rétention</span>
+                    <div class="progress" style="width: 120px; height: 8px;">
+                        <div class="progress-bar bg-primary" style="width: 92%"></div>
+                    </div>
+                    <strong>92%</strong>
+                </div>
+                
+                <div class="performance-item d-flex justify-content-between align-items-center py-2">
+                    <span class="text-elegant-gray">Satisfaction client</span>
+                    <div class="progress" style="width: 120px; height: 8px;">
+                        <div class="progress-bar bg-info" style="width: 78%"></div>
+                    </div>
+                    <strong>78%</strong>
+                </div>
+                
+                <div class="performance-item d-flex justify-content-between align-items-center py-2">
+                    <span class="text-elegant-gray">Projets à temps</span>
+                    <div class="progress" style="width: 120px; height: 8px;">
+                        <div class="progress-bar bg-warning" style="width: 65%"></div>
+                    </div>
+                    <strong>65%</strong>
+                </div>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .icon-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+    }
+    
+    .btn-outline-elegant {
+        border: 2px solid var(--primary);
+        color: var(--primary);
+        background: transparent;
+        border-radius: 14px;
+        padding: 1rem 2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-outline-elegant:hover {
+        background: var(--primary);
+        color: white;
+        transform: translateY(-2px);
+    }
+    
+    .activity-list {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    
+    .activity-item {
+        transition: all 0.3s ease;
+    }
+    
+    .activity-item:hover {
+        background: rgba(99, 102, 241, 0.05);
+        border-radius: 12px;
+        margin: 0 -1rem;
+        padding: 1rem !important;
+    }
+    
+    .performance-stats > * + * {
+    margin-top: 1rem;
+    }
+    
+    .performance-item {
+        border-bottom: 1px solid var(--elegant-gray-200);
+    }
+    
+    .performance-item:last-child {
+        border-bottom: none;
+    }
+</style>
 {% endblock %}
