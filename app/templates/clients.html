@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Clients</h1>
+    <a href="{{ url_for('new_client') }}" class="btn btn-primary">Nouveau Client</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Ville</th>
+            <th>Statut</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for client in clients %}
+        <tr>
+            <td>{{ client.name }}</td>
+            <td>{{ client.contact_email }}</td>
+            <td>{{ client.phone }}</td>
+            <td>{{ client.city }}</td>
+            <td>
+                <span class="badge bg-{{ 'success' if client.status == 'actif' else 'warning' if client.status == 'prospect' else 'secondary' }}">
+                    {{ client.status }}
+                </span>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="5" class="text-center">Aucun client trouvé</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
